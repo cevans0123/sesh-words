@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Session Words</title>
+
+    <style>
+        #choice {
+            width: 350px;
+            height: 500px;
+            display: inline-block;
+            margin: 25px;
+            background-color:paleturquoise;
+            padding: 25px;
+            border: 4px solid rgb(51, 47, 45);
+
+        }
+        #choice h1 {
+            text-align: center;
+        }
+        #box {
+            margin-left: 35px;
+            width: 80%;
+            height: 45px;
+            border: 2px solid rgb(51, 47, 45);
+            font-size: larger;
+        }
+        #choice button {
+            background-color: rgb(252, 185, 2);
+            border-radius: 5px;
+            color: white;
+            font-size: medium;
+            height: 35px;
+            box-shadow: 2px 2px grey;
+        }
+        #buddy {
+            width: 450px;
+            height: 500px;
+            display: inline-block;
+            margin: 25px;
+            background-color: silver;
+            vertical-align: top;
+            padding: 25px;
+            border: 4px solid rgb(51, 47, 45);
+        }
+        #buddy button {
+            background-color:dodgerblue;
+            border-radius: 5px;
+            color: white;
+            font-size: medium;
+            height: 35px;
+            width: 115px;
+            box-shadow: 2px 2px grey;
+        }
+        #radio {
+            margin-top:50px;
+            margin-bottom:30px;
+        }
+        #radio input {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        #list {
+            height: 385px;
+            overflow: scroll;
+            border: 2px solid rgb(51, 47, 45);
+            background-color: white;
+            padding: 25px;
+            font-size:medium;
+            margin-top:20px;
+        }
+        #list p {
+            margin: 0px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            font-weight: bold;
+        }
+        .big {
+            font-size: 40px;
+            font-weight: bold;
+        }
+        span {
+            color: black;
+            font-size: small;
+            font-weight: normal;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="wrapper">    
+        <div id="choice">
+            <form action="/submit" method="POST">{% csrf_token %}
+                <h1>Add a new word</h1>
+                <input id="box" type="text" name="words">
+
+                <div id="radio">
+                    <h3>Choose color</h3>
+                    <input type="radio" name="color" value="red"> Red<br>
+                    <input type="radio" name="color" value="green"> Green<br>
+                    <input type="radio" name="color" value="blue"> Blue<br>
+                    <input type='checkbox' name='big_font' value='YES'> Show in BIG fonts!
+                </div>
+                <button>Add to session</button>
+            </form>
+        </div>
+
+        <div id="buddy">
+            <form action="/clear" method="POST">{% csrf_token %}
+                <button>Clear Session</button>
+                <div id="list">
+                    {% for words in request.session.words %}
+                    <p style="color:{{ words.color }};" class = {{ words.show_big }}>{{ words.words }} <span>-added on {{ time }}</span></p>
+                    {% endfor %}
+                </div>
+            </form>
+        
+        </div>
+    </div>
+</body>
+</html>
